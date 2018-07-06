@@ -20,3 +20,7 @@ services:
       interval: 1m30s
       timeout: 10s
       retries: 3
+  webdis:
+    image: anapsix/webdis:latest
+    ports:
+      - 7379:7379  
