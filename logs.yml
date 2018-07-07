@@ -1,38 +1,30 @@
-elasticsearch:
-  image: nshou/elasticsearch-kibana
-  ports:
+version: '3'
+services:
+  elasticsearch-kibana:
+    image: nshou/elasticsearch-kibana
+    ports:
       - 9200:9200
       - 5601:5601
-  volumes:
-      - /epistema/data/elastic:/usr/share/elasticsearch/data/elasticsearch
-  restart: always
-  environment:
-    LOGSPOUT: ignore
-logspout:
-  image: rtoma/logspout-redis-logstash:0.1.8
-  command: 'redis://redis'
-  environment:
-    - DEBUG=true
-#    - REDIS_PASSWORD=secret
-    - REDIS_KEY=logstash
-    - REDIS_DOCKER_HOST=integration
-    - REDIS_LOGSTASH_TYPE=docker
-    - DEDOT_LABELS=true
-    - LOGSPOUT=ignore
+    volumes:
+      - /cognigo/data/elastic:/usr/share/elasticsearch/data/elasticsearch
+    restart: always
+    environment:
+      LOGSPOUT: ignore
+  logspout:
+    image: rtoma/logspout-redis-logstash:0.1.8
+    command: 'redis://redis'
+    environment:
+      - DEBUG=true
+      - LOGSPOUT=ignore
 
-  volumes:
-    - /var/run/docker.sock:/var/run/docker.sock:ro
-  ports:
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
       - "8003:80"
-  links:
-    - redis
-logstash:
-  image: logstash:2.3.4
-  command: 'logstash -f /conf/logstash.conf -v'
-  volumes:
-    - ./logstash:/conf
-  environment:
-    LOGSPOUT: ignore
-  links:
-    - redis
-    - elasticsearch
+  logstash:
+    image: logstash:2.3.4
+    command: 'logstash -f /conf/logstash.conf -v'
+    volumes:
+      - ./logstash:/conf
+    environment:
+      - LOGSPOUT=ignore

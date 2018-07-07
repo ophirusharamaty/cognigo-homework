@@ -23,4 +23,4 @@ services:
   webdis:
     image: anapsix/webdis:latest
     ports:
-      - 7379:7379  
+      - 7379:7379
