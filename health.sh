@@ -5,5 +5,5 @@
 #docker exec -it cognigohomework_redis_1 redis-cli ping
 
 
-#using tests in docker
+#asuming docker healthcheck
 docker inspect --format='{{json .State.Health}}' $(docker ps -q)
